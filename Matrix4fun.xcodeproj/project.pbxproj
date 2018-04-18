@@ -8,12 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		72D0C5A8208655A2002AB0C7 /* Matrix4fun.h in Headers */ = {isa = PBXBuildFile; fileRef = 72D0C5A6208655A2002AB0C7 /* Matrix4fun.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		72D0C5AF208655B6002AB0C7 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D0C5AE208655B6002AB0C7 /* Matrix.swift */; };
+		72D0C5B7208662AB002AB0C7 /* Matrix4funTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D0C5B6208662AB002AB0C7 /* Matrix4funTests.swift */; };
+		72D0C5B9208662AB002AB0C7 /* Matrix4fun.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D0C5A3208655A2002AB0C7 /* Matrix4fun.framework */; };
+		72D0C5C0208663D5002AB0C7 /* Float+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D0C5BF208663D5002AB0C7 /* Float+utils.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		72D0C5BA208662AB002AB0C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 72D0C59A208655A2002AB0C7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 72D0C5A2208655A2002AB0C7;
+			remoteInfo = Matrix4fun;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		72D0C5A3208655A2002AB0C7 /* Matrix4fun.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Matrix4fun.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72D0C5A6208655A2002AB0C7 /* Matrix4fun.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Matrix4fun.h; sourceTree = "<group>"; };
 		72D0C5A7208655A2002AB0C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		72D0C5AE208655B6002AB0C7 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		72D0C5B4208662AB002AB0C7 /* Matrix4funTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Matrix4funTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		72D0C5B6208662AB002AB0C7 /* Matrix4funTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix4funTests.swift; sourceTree = "<group>"; };
+		72D0C5B8208662AB002AB0C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		72D0C5BF208663D5002AB0C7 /* Float+utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+utils.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -24,6 +43,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		72D0C5B1208662AB002AB0C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72D0C5B9208662AB002AB0C7 /* Matrix4fun.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -31,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				72D0C5A5208655A2002AB0C7 /* Matrix4fun */,
+				72D0C5B5208662AB002AB0C7 /* Matrix4funTests */,
 				72D0C5A4208655A2002AB0C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -39,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				72D0C5A3208655A2002AB0C7 /* Matrix4fun.framework */,
+				72D0C5B4208662AB002AB0C7 /* Matrix4funTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,8 +77,19 @@
 			children = (
 				72D0C5A6208655A2002AB0C7 /* Matrix4fun.h */,
 				72D0C5A7208655A2002AB0C7 /* Info.plist */,
+				72D0C5AE208655B6002AB0C7 /* Matrix.swift */,
+				72D0C5BF208663D5002AB0C7 /* Float+utils.swift */,
 			);
 			path = Matrix4fun;
+			sourceTree = "<group>";
+		};
+		72D0C5B5208662AB002AB0C7 /* Matrix4funTests */ = {
+			isa = PBXGroup;
+			children = (
+				72D0C5B6208662AB002AB0C7 /* Matrix4funTests.swift */,
+				72D0C5B8208662AB002AB0C7 /* Info.plist */,
+			);
+			path = Matrix4funTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -84,16 +124,39 @@
 			productReference = 72D0C5A3208655A2002AB0C7 /* Matrix4fun.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		72D0C5B3208662AB002AB0C7 /* Matrix4funTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 72D0C5BC208662AB002AB0C7 /* Build configuration list for PBXNativeTarget "Matrix4funTests" */;
+			buildPhases = (
+				72D0C5B0208662AB002AB0C7 /* Sources */,
+				72D0C5B1208662AB002AB0C7 /* Frameworks */,
+				72D0C5B2208662AB002AB0C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				72D0C5BB208662AB002AB0C7 /* PBXTargetDependency */,
+			);
+			name = Matrix4funTests;
+			productName = Matrix4funTests;
+			productReference = 72D0C5B4208662AB002AB0C7 /* Matrix4funTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		72D0C59A208655A2002AB0C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0930;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Applause;
 				TargetAttributes = {
 					72D0C5A2208655A2002AB0C7 = {
+						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 0930;
+					};
+					72D0C5B3208662AB002AB0C7 = {
 						CreatedOnToolsVersion = 9.3;
 					};
 				};
@@ -111,12 +174,20 @@
 			projectRoot = "";
 			targets = (
 				72D0C5A2208655A2002AB0C7 /* Matrix4fun */,
+				72D0C5B3208662AB002AB0C7 /* Matrix4funTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		72D0C5A1208655A2002AB0C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72D0C5B2208662AB002AB0C7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -130,10 +201,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72D0C5C0208663D5002AB0C7 /* Float+utils.swift in Sources */,
+				72D0C5AF208655B6002AB0C7 /* Matrix.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72D0C5B0208662AB002AB0C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72D0C5B7208662AB002AB0C7 /* Matrix4funTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		72D0C5BB208662AB002AB0C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 72D0C5A2208655A2002AB0C7 /* Matrix4fun */;
+			targetProxy = 72D0C5BA208662AB002AB0C7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		72D0C5A9208655A2002AB0C7 /* Debug */ = {
@@ -259,6 +348,7 @@
 		72D0C5AC208655A2002AB0C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -276,6 +366,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Applause.Matrix4fun;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -284,6 +375,7 @@
 		72D0C5AD208655A2002AB0C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -306,6 +398,42 @@
 			};
 			name = Release;
 		};
+		72D0C5BD208662AB002AB0C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EUR9M2AGH3;
+				INFOPLIST_FILE = Matrix4funTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pawko.Matrix4funTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		72D0C5BE208662AB002AB0C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EUR9M2AGH3;
+				INFOPLIST_FILE = Matrix4funTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pawko.Matrix4funTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -323,6 +451,15 @@
 			buildConfigurations = (
 				72D0C5AC208655A2002AB0C7 /* Debug */,
 				72D0C5AD208655A2002AB0C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		72D0C5BC208662AB002AB0C7 /* Build configuration list for PBXNativeTarget "Matrix4funTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72D0C5BD208662AB002AB0C7 /* Debug */,
+				72D0C5BE208662AB002AB0C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

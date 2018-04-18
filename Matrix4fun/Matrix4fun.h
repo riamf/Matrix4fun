@@ -1,11 +1,3 @@
-//
-//  Matrix4fun.h
-//  Matrix4fun
-//
-//  Created by Pawel Kowalczuk on 17/04/2018.
-//  Copyright © 2018 Applause. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for Matrix4fun.
