@@ -22,10 +22,10 @@ public struct Matrix {
         let rows = data.count
         let columns = data.map({ $0.count }).max() ?? 0
         dimension = CGSize(width: columns, height: rows)
-        dataCheck()
+        todense()
     }
 
-    private mutating func dataCheck() {
+    private mutating func todense() {
         let colums = dimension.width.toInt
 
         for i in 0..<raw.count {
@@ -64,6 +64,34 @@ extension Matrix {
         }
 
         return Matrix(vec)
+    }
+
+    public static func -(lhs:Matrix, rhs:Matrix) -> Matrix? {
+        guard lhs.dimension == rhs.dimension else {
+            return nil
+        }
+        let dim = lhs.dimension
+        var vec = [Vector]()
+        for i in (0..<dim.height.toInt) {
+            var vec_ = Vector()
+            for j in (0..<dim.width.toInt) {
+                vec_.append(lhs[i][j]-rhs[i][j])
+            }
+            vec.append(vec_)
+        }
+
+        return Matrix(vec)
+    }
+
+    public static func *(lhs: Matrix, rhs: Matrix) -> Matrix? {
+        guard lhs.dimension.width == rhs.dimension.height else {
+            return nil
+        }
+
+        var vec = [Vector]()
+        for i in (0..<lhs.dimension.width) {
+
+        }
     }
 }
 
