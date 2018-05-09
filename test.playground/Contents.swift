@@ -95,6 +95,20 @@ class CountVectorizer {
 
 class TfidfTransformer {
 
+    enum Norm {
+        case l2
+        case none
+    }
+
+    private var smoothIdf = false
+    private var norm: Norm = .none
+
+    init(smoothIdf: Bool = false,
+         norm: Norm = .none) {
+        self.smoothIdf = smoothIdf
+        self.norm = norm
+    }
+
     func fit(_ lines: [Any]) -> [[Double]] {
         guard let lines = lines as? [[Int]] else {
             fatalError("Expected counts array")
@@ -103,26 +117,54 @@ class TfidfTransformer {
         for line in lines {
             var lineResult = [Double]()
             for idx in (0..<line.count) {
-                let tfidfValue = tf(document: line, idx: idx) * idf(idx: idx, documents: lines)
+                let tfidfValue = tf(document: line, idx: idx) * idf_smooth(idx: idx, documents: lines)
                 lineResult.append(tfidfValue)
             }
             result.append(lineResult)
         }
-        return result
+        if norm == .none {
+            return result
+        } else {
+            return l2norm(result)
+        }
+    }
+
+    private func l2norm(_ input: [[Double]]) -> [[Double]] {
+        var results = [[Double]]()
+        for doc in input {
+            let x_ = sqrt(doc.map({ pow($0, 2.0) }).reduce(0, +))
+            var partial = [Double]()
+            for word in doc {
+                partial.append(word/x_)
+            }
+            results.append(partial)
+        }
+
+        return results
     }
 
     private func tf(document: [Int], idx: Int) -> Double {
-        let words = document.filter({ $0 > 0 }).count
-        return words > 0 ? document[idx].double/words.double : 0.0
+        return document[idx].double
     }
 
     private func idf(idx: Int, documents: [[Int]]) -> Double {
         let nDocuments = documents.count.double
         var counts: Double = 0
         for document in documents {
-            counts += document[idx].double
+            counts += document[idx] > 0 ? 1:0
         }
-        return log2(nDocuments/counts)
+
+        return log(nDocuments/counts) + 1
+    }
+
+    private func idf_smooth(idx: Int, documents: [[Int]]) -> Double {
+        let nDocuments = documents.count.double
+        var counts: Double = 0
+        for document in documents {
+            counts += document[idx] > 0 ? 1:0
+        }
+
+        return log((1+nDocuments)/(counts + 1)) + 1
     }
 }
 
@@ -136,11 +178,10 @@ cv.forEach {
     print($0)
 }
 print("")
-let tf = TfidfTransformer().fit(cv)
+let tf = TfidfTransformer(norm: .l2).fit(cv)
 
 tf.forEach {
     print($0)
 }
 
-print(log(2.0))
 
