@@ -1,5 +1,9 @@
 import Foundation
 
+typealias Value = Double
+typealias Vector = [Value]
+typealias Matrix = [Vector]
+
 public struct Constants {
     static var stopWords: [String] = {
         if let path = Bundle.main.path(forResource: "stopwords", ofType: "csv"),
@@ -22,8 +26,8 @@ extension Array where Element: Equatable {
 }
 
 extension Int {
-    var double: Double {
-        return Double(self)
+    var value: Value {
+        return Value(self)
     }
 }
 
@@ -45,16 +49,14 @@ class Preprocessor {
      - parameters:
         - lines: type of [String]
      */
-    func fit(_ lines: [Any]) -> [Any] {
-        guard let lines = lines as? [String] else {
-            fatalError("Data type mismatch.")
-        }
+    func fit(_ lines: [String]) -> [[String]] {
         let result = lines
             .map({ $0.split(separator: " ") })
             .map({
                 $0.map({ lowercase ? String($0).lowercased() : String($0) })
                     .filter({ $0.count > minLength })
             })
+
         return stopWords
             ? result.map({ $0.filter({ !Constants.stopWords.contains($0) }) })
             : result
@@ -103,19 +105,21 @@ class TfidfTransformer {
     private var smoothIdf = false
     private var norm: Norm = .none
 
+    private var normalization: ()
+
     init(smoothIdf: Bool = false,
          norm: Norm = .none) {
         self.smoothIdf = smoothIdf
         self.norm = norm
     }
 
-    func fit(_ lines: [Any]) -> [[Double]] {
+    func fit(_ lines: [Any]) -> Matrix {
         guard let lines = lines as? [[Int]] else {
             fatalError("Expected counts array")
         }
-        var result = [[Double]]()
+        var result = Matrix()
         for line in lines {
-            var lineResult = [Double]()
+            var lineResult = Vector()
             for idx in (0..<line.count) {
                 let tfidfValue = tf(document: line, idx: idx) * idf_smooth(idx: idx, documents: lines)
                 lineResult.append(tfidfValue)
@@ -129,11 +133,11 @@ class TfidfTransformer {
         }
     }
 
-    private func l2norm(_ input: [[Double]]) -> [[Double]] {
-        var results = [[Double]]()
+    private func l2norm(_ input: Matrix) -> Matrix {
+        var results = Matrix()
         for doc in input {
             let x_ = sqrt(doc.map({ pow($0, 2.0) }).reduce(0, +))
-            var partial = [Double]()
+            var partial = Vector()
             for word in doc {
                 partial.append(word/x_)
             }
@@ -143,13 +147,13 @@ class TfidfTransformer {
         return results
     }
 
-    private func tf(document: [Int], idx: Int) -> Double {
-        return document[idx].double
+    private func tf(document: [Int], idx: Int) -> Value {
+        return document[idx].value
     }
 
-    private func idf(idx: Int, documents: [[Int]]) -> Double {
-        let nDocuments = documents.count.double
-        var counts: Double = 0
+    private func idf(idx: Int, documents: [[Int]]) -> Value {
+        let nDocuments = documents.count.value
+        var counts: Value = 0
         for document in documents {
             counts += document[idx] > 0 ? 1:0
         }
@@ -157,9 +161,9 @@ class TfidfTransformer {
         return log(nDocuments/counts) + 1
     }
 
-    private func idf_smooth(idx: Int, documents: [[Int]]) -> Double {
-        let nDocuments = documents.count.double
-        var counts: Double = 0
+    private func idf_smooth(idx: Int, documents: [[Int]]) -> Value {
+        let nDocuments = documents.count.value
+        var counts: Value = 0
         for document in documents {
             counts += document[idx] > 0 ? 1:0
         }
