@@ -76,18 +76,18 @@ class CountVectorizer {
      An 2d dense matrix containing count word per document
      where row is document and column is word
      */
-    func fit(_ lines: [Any]) -> [[Int]] {
+    func fit(_ lines: [Any]) -> Matrix {
         guard let lines = lines as? [[String]] else {
             fatalError("Data type mismatch.")
         }
         let words = lines.reduce([],+)
 
         vocabulary = words.uniques().sorted()
-        var counts = [[Int]]()
+        var counts = Matrix()
         for line in lines {
-            var count = [Int]()
+            var count = Vector()
             for v in vocabulary {
-                count.append(line.counts(item: v))
+                count.append(line.counts(item: v).value)
             }
             counts.append(count)
         }
@@ -113,10 +113,8 @@ class TfidfTransformer {
         self.norm = norm
     }
 
-    func fit(_ lines: [Any]) -> Matrix {
-        guard let lines = lines as? [[Int]] else {
-            fatalError("Expected counts array")
-        }
+    func fit(_ lines: Matrix) -> Matrix {
+
         var result = Matrix()
         for line in lines {
             var lineResult = Vector()
@@ -147,11 +145,11 @@ class TfidfTransformer {
         return results
     }
 
-    private func tf(document: [Int], idx: Int) -> Value {
-        return document[idx].value
+    private func tf(document: Vector, idx: Int) -> Value {
+        return document[idx]
     }
 
-    private func idf(idx: Int, documents: [[Int]]) -> Value {
+    private func idf(idx: Int, documents: Matrix) -> Value {
         let nDocuments = documents.count.value
         var counts: Value = 0
         for document in documents {
@@ -161,11 +159,11 @@ class TfidfTransformer {
         return log(nDocuments/counts) + 1
     }
 
-    private func idf_smooth(idx: Int, documents: [[Int]]) -> Value {
+    private func idf_smooth(idx: Int, documents: Matrix) -> Value {
         let nDocuments = documents.count.value
         var counts: Value = 0
         for document in documents {
-            counts += document[idx] > 0 ? 1:0
+            counts += document[idx] > 0.0 ? 1.0:0.0
         }
 
         return log((1+nDocuments)/(counts + 1)) + 1
