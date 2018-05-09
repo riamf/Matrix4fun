@@ -95,22 +95,32 @@ class CountVectorizer {
     }
 }
 
+protocol IdfEquationType {
+    func equation(_ nDocuments: Value, _ counts: Value) -> Value
+}
+
+class IdfEquation: IdfEquationType {
+    func equation(_ nDocuments: Value, _ counts: Value) -> Value {
+        return log(nDocuments/counts) + 1
+    }
+}
+
+class SmoothIdfEquation: IdfEquationType {
+    func equation(_ nDocuments: Value, _ counts: Value) -> Value {
+        return log((1+nDocuments)/(counts + 1)) + 1
+    }
+}
+
 class TfidfTransformer {
 
-    enum Norm {
-        case l2
-        case none
-    }
+    private var smoothIdf = true
+    private var idfEquation: IdfEquationType = IdfEquation()
 
-    private var smoothIdf = false
-    private var norm: Norm = .none
-
-    private var normalization: ()
-
-    init(smoothIdf: Bool = false,
-         norm: Norm = .none) {
+    init(smoothIdf: Bool = true) {
         self.smoothIdf = smoothIdf
-        self.norm = norm
+        if smoothIdf {
+            idfEquation = SmoothIdfEquation()
+        }
     }
 
     func fit(_ lines: Matrix) -> Matrix {
@@ -119,19 +129,31 @@ class TfidfTransformer {
         for line in lines {
             var lineResult = Vector()
             for idx in (0..<line.count) {
-                let tfidfValue = tf(document: line, idx: idx) * idf_smooth(idx: idx, documents: lines)
+                let tfidfValue = tf(document: line, idx: idx) * idf(idx: idx, documents: lines)
                 lineResult.append(tfidfValue)
             }
             result.append(lineResult)
         }
-        if norm == .none {
-            return result
-        } else {
-            return l2norm(result)
-        }
+
+        return result
     }
 
-    private func l2norm(_ input: Matrix) -> Matrix {
+    private func tf(document: Vector, idx: Int) -> Value {
+        return document[idx]
+    }
+
+    private func idf(idx: Int, documents: Matrix) -> Value {
+        let nDocuments = documents.count.value
+        var counts: Value = 0
+        for document in documents {
+            counts += document[idx] > 0.0 ? 1.0:0.0
+        }
+        return idfEquation.equation(nDocuments, counts)
+    }
+}
+
+class L2Normalization {
+    func fit(_ input: Matrix) -> Matrix {
         var results = Matrix()
         for doc in input {
             let x_ = sqrt(doc.map({ pow($0, 2.0) }).reduce(0, +))
@@ -143,30 +165,6 @@ class TfidfTransformer {
         }
 
         return results
-    }
-
-    private func tf(document: Vector, idx: Int) -> Value {
-        return document[idx]
-    }
-
-    private func idf(idx: Int, documents: Matrix) -> Value {
-        let nDocuments = documents.count.value
-        var counts: Value = 0
-        for document in documents {
-            counts += document[idx] > 0 ? 1:0
-        }
-
-        return log(nDocuments/counts) + 1
-    }
-
-    private func idf_smooth(idx: Int, documents: Matrix) -> Value {
-        let nDocuments = documents.count.value
-        var counts: Value = 0
-        for document in documents {
-            counts += document[idx] > 0.0 ? 1.0:0.0
-        }
-
-        return log((1+nDocuments)/(counts + 1)) + 1
     }
 }
 
@@ -180,10 +178,13 @@ cv.forEach {
     print($0)
 }
 print("")
-let tf = TfidfTransformer(norm: .l2).fit(cv)
+let tf = TfidfTransformer().fit(cv)
 
 tf.forEach {
     print($0)
 }
-
-
+print("")
+let l2 = L2Normalization().fit(tf)
+l2.forEach {
+    print($0)
+}
