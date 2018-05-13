@@ -4,6 +4,49 @@ typealias Value = Double
 typealias Vector = [Value]
 typealias Matrix = [Vector]
 
+extension Array where Element:Collection,  Element.Element == Value {
+
+    var toString: String {
+        guard !isEmpty else { return  "<EMPTY>" }
+        var res = "[\n"
+        for row in self {
+            res += "["
+            for v in row {
+                res += "\(v), "
+            }
+            _ = res.removeLast()
+            _ = res.removeLast()
+            res += "],\n"
+        }
+        _ = res.removeLast()
+        _ = res.removeLast()
+        res += "\n]"
+        return res
+    }
+}
+
+extension Array where Element:Collection, Element.Element == Value {
+    func T() -> Matrix {
+
+        let cCount = self.first?.count ?? 0
+        var transposed: Matrix = (0..<cCount).map({_ in Vector()})
+
+        for row in self {
+            for (idx, val) in row.enumerated() {
+                transposed[idx].append(val)
+            }
+        }
+
+        return transposed
+    }
+
+    static func *(lhs: Array, rhs: Array) -> Matrix {
+        var multiplied = Matrix()
+
+        return multiplied
+    }
+}
+
 public struct Constants {
     static var stopWords: [String] = {
         if let path = Bundle.main.path(forResource: "stopwords", ofType: "csv"),
@@ -188,3 +231,13 @@ let l2 = L2Normalization().fit(tf)
 l2.forEach {
     print($0)
 }
+
+let tmp: Matrix = [[1.0,1.0,1.0,1.0],
+[2.0,2.0,2.0,2.0],
+[3.0,3.0,3.0,3.0],
+[4.0,4.0,4.0,4.0],
+[5.0,5.0,5.0,5.0]]
+print("")
+print(tmp.toString)
+print("")
+print(tmp.T().toString)
